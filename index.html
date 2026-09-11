@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>George Zhang for Treasurer | CHS StuCo</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Canvas Confetti for Interactive Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --bg-base: #f9f9fb;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.02);
+            --accent-yellow: #FFC700;
+            --accent-yellow-light: #FFF4CC;
+            --accent-yellow-glow: rgba(255, 199, 0, 0.2);
+            --text-primary: #1f2328;
+            --text-secondary: #59616d;
+            --card-hover-border: rgba(255, 199, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Liquid Glass Floating Blobs */
+        .ambient-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.55;
+            animation: floatBlob 18s ease-in-out infinite alternate;
+        }
+
+        .blob-1 {
+            width: 600px;
+            height: 600px;
+            background: rgba(255, 199, 0, 0.18);
+            top: -150px;
+            left: -150px;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+
+        .blob-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 230, 128, 0.25);
+            top: 40vh;
+            right: -100px;
+            animation-delay: -5s;
+            border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+        }
+
+        .blob-3 {
+            width: 700px;
+            height: 700px;
+            background: rgba(255, 215, 0, 0.12);
+            bottom: -200px;
+            left: 20vw;
+            animation-delay: -10s;
+            border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
+            50% { transform: translate(40px, 60px) scale(1.08) rotate(180deg); }
+            100% { transform: translate(-30px, 40px) scale(0.95) rotate(360deg); }
+        }
+
+        /* Glassmorphism Generic Class */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 32px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass:hover {
+            border-color: var(--card-hover-border);
+            box-shadow: 0 35px 70px rgba(255, 199, 0, 0.08), 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        /* Floating Nav Bar */
+        nav {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 100px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo span {
+            background: var(--accent-yellow);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--text-primary);
+            color: #ffffff;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-yellow);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        /* Wrapper Setup for Long Scrolling Experience */
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 140px 20px 100px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Section Reveal Scroll Animation Frame */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 1. HERO SECTION */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            align-items: center;
+            padding: 60px;
+        }
+
+        .hero-content h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            background: linear-gradient(135deg, #e6b200, #b38600);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: var(--text-primary);
+            font-weight: 700;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(255, 199, 0, 0.3);
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 199, 0, 0.5);
+            background: #ffcf1a;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 16px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .hero-avatar-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-avatar-box img {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            animation: pulseAvatar 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseAvatar {
+            0% { transform: scale(1); box-shadow: 0 20px 40px rgba(255,199,0,0.15); }
+            100% { transform: scale(1.03); box-shadow: 0 30px 60px rgba(255,199,0,0.3); }
+        }
+
+        /* Floating badges over hero */
+        .floating-badge {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: floatBadge 4s ease-in-out infinite alternate;
+        }
+
+        .badge-1 { top: 10px; left: 10px; }
+        .badge-2 { bottom: 20px; right: 10px; animation-delay: -2s; }
+
+        @keyframes floatBadge {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        /* 2. STATS BAR SECTION */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* 3. ABOUT ME / BIO SECTION */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 60px;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #997a00;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .about-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .about-content p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: var(--accent-yellow-light);
+            color: #665200;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .about-visual {
+            background: linear-gradient(135deg, rgba(255,199,0,0.1), rgba(255,255,255,0.4));
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            margin-top: 6px;
+            box-shadow: 0 0 10px var(--accent-yellow);
+        }
+
+        .timeline-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .timeline-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* 4. THE CAMPAIGN POSTER SHOWCASE */
+        .poster-section {
+            padding: 60px;
+            text-align: center;
+        }
+
+        .poster-section h2 {
+            font-size: 38px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .poster-section > p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .poster-card-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            border: 4px solid #ffffff;
+            transition: transform 0.4s ease;
+        }
+
+        .poster-card-wrapper:hover {
+            transform: scale(1.02) rotate(1deg);
+        }
+
+        .poster-card-wrapper img {
+            width: 100%;
+            display: block;
+        }
+
+        /* 5. TREASURER MANIFESTO / 3 PILLARS */
+        .pillars-section {
+            padding: 60px;
+        }
+
+        .pillars-section h2 {
+            font-size: 38px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .pillars-section > p {
+            text-align: center;
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .pillar-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 30px 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card:hover {
+            background: rgba(255, 255, 255, 0.85);
+            transform: translateY(-6px);
+            border-color: var(--accent-yellow);
+        }
+
+        .pillar-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-yellow-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b38600;
+            margin-bottom: 20px;
+        }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .pillar-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 6. BUDGET SIMULATOR / INTERACTIVE TOOL */
+        .simulator-section {
+            padding: 60px;
+        }
+
+        .simulator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .simulator-content h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .simulator-content p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .slider-group {
+            margin-bottom: 20px;
+        }
+
+        .slider-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent-yellow);
+            cursor: pointer;
+        }
+
+        .simulator-output {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .simulator-output h3 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .output-amount {
+            font-size: 42px;
+            font-weight: 800;
+            color: #b38600;
+            margin-bottom: 14px;
+        }
+
+        .output-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 7. Q&A / FAQ ACCORDION */
+        .faq-section {
+            padding: 60px;
+        }
+
+        .faq-section h2 {
+            font-size: 38px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .faq-section > p {
+            text-align: center;
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            padding: 20px 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 17px;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 150px;
+            margin-top: 12px;
+        }
+
+        .faq-item.open .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        /* 8. ENDORSEMENTS & SUPPORT TICKER */
+        .support-section {
+            padding: 60px;
+            text-align: center;
+        }
+
+        .support-section h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .support-section p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 20px 0;
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+
+        .ticker-move {
+            display: flex;
+            gap: 40px;
+            white-space: nowrap;
+            animation: tickerScroll 25s linear infinite;
+        }
+
+        .ticker-item {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 9. VOTE INTERACTIVE CALL TO ACTION */
+        .vote-section {
+            padding: 80px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,199,0,0.15), rgba(255,255,255,0.6));
+            border-radius: 36px;
+            border: 1px solid rgba(255,255,255,0.9);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vote-section h2 {
+            font-size: 44px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .vote-section p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            line-height: 1.6;
+        }
+
+        .vote-btn-giant {
+            background: var(--text-primary);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 20px 48px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vote-btn-giant:hover {
+            background: var(--accent-yellow);
+            color: var(--text-primary);
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 25px 50px rgba(255,199,0,0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 13px;
+            color: #727b88;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        footer strong {
+            color: var(--text-primary);
+        }
+
+        /* Animations Keyframes */
+        @keyframes slideDown {
+            0% { transform: translate(-50%, -50px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        /* Responsive Layout Overrides */
+        @media (max-width: 900px) {
+            .hero-section, .about-section, .simulator-grid {
+                grid-template-columns: 1fr;
+                padding: 40px 24px;
+            }
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero-content h1 {
+                font-size: 38px;
+            }
+            nav {
+                width: 95%;
+                padding: 10px 16px;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Liquid Glass Refractions -->
+    <div class="ambient-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Floating Glass Navigation -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <i data-lucide="shield-check" width="18" height="18"></i>
+            George Zhang <span>2030</span>
+        </a>
+    </nav>
+
+    <!-- Main Scrolling Container -->
+    <div class="wrapper">
+
+        <!-- 1. HERO SECTION -->
+        <section class="hero-section glass reveal">
+            <div class="hero-content">
+                <div class="section-title">
+                    Conestoga High School • Student Council • Class of 2030
+                </div>
+                <h1>Vote for<br><span>George Zhang</span></h1>
+                <p>Hey 'Stoga! I’m George Zhang, and I’m running to be your 9th Grade Treasurer. Let's make sure our freshman class budget goes toward what actually matters to us.</p>
+                <div class="hero-btns">
+                    <a href="#vote" class="btn-primary">
+                        <i data-lucide="check-circle" width="18" height="18"></i> Vote George Zhang
+                    </a>
+                    <a href="#pillars" class="btn-secondary">
+                        <i data-lucide="compass" width="18" height="18"></i> Explore Platform
+                    </a>
+                </div>
+            </div>
+            <div class="hero-avatar-box">
+                <div class="floating-badge badge-1">
+                    <i data-lucide="award" width="14" height="14" style="color:#b38600"></i> Pioneer Pride
+                </div>
+                <!-- Profile Image Specified: gzpfp.png -->
+                <img src="gzpfp.png" alt="Candidate Picture" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'">
+                <div class="floating-badge badge-2">
+                    <i data-lucide="dollar-sign" width="14" height="14" style="color:#b38600"></i> Treasurer
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. QUICK STATS BAR -->
+        <section class="stats-grid reveal">
+            <div class="stat-card glass">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Budget Transparency</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Open Idea Box</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-number">0</div>
+                <div class="stat-label">Wasted Class Funds</div>
+            </div>
+            <div class="stat-card glass">
+                <div class="stat-number">#1</div>
+                <div class="stat-label">Freshman Focus</div>
+            </div>
+        </section>
+
+        <!-- 3. ABOUT ME SECTION -->
+        <section id="about" class="about-section glass reveal">
+            <div class="about-content">
+                <div class="section-title">
+                    <i data-lucide="user" width="14" height="14"></i> Get To Know Me
+                </div>
+                <h2>Meet Your Candidate for 9th Grade Treasurer</h2>
+                <p>Transitioning to Conestoga High School is a massive step. As your treasurer, my goal is to ensure our class has the financial foundation needed to throw amazing events, back our school clubs, and build a unified freshman identity.</p>
+                <p>I combine attention to detail with practical organization, making sure every dollar raised is accounted for and spent wisely.</p>
+                <div class="tags-list">
+                    <span class="tag">Detail Oriented</span>
+                    <span class="tag">Approachable</span>
+                    <span class="tag">Conestoga '29</span>
+                    <span class="tag">Problem Solver</span>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-text">
+                        <h4>Financial Oversight</h4>
+                        <p>Keeping exact tracking systems so nothing slips through the cracks.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-text">
+                        <h4>Student Voice Integration</h4>
+                        <p>Polls and suggestion boxes before allocating major class funds.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-text">
+                        <h4>Community Building</h4>
+                        <p>Funding memorable events that unite the Class of 2029.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CAMPAIGN POSTER SHOWCASE -->
+        <section id="poster" class="poster-section glass reveal">
+            <div class="section-title" style="justify-content: center;">
+                <i data-lucide="image" width="14" height="14"></i> Official Campaign Material
+            </div>
+            <h2>Check Out My Official Poster</h2>
+            <p>Keep an eye out for this around the halls of Conestoga High School!</p>
+            <div class="poster-card-wrapper">
+                <!-- Poster Image Specified: gzposter.png -->
+                <img src="gzposter.png" alt="Campaign Poster" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80'">
+            </div>
+        </section>
+
+        <!-- 5. THREE PILLARS / MANIFESTO -->
+        <section id="pillars" class="pillars-section reveal">
+            <div class="section-title" style="justify-content: center;">
+                <i data-lucide="layout-grid" width="14" height="14"></i> My Core Platform
+            </div>
+            <h2>Three Pillars for Our Class</h2>
+            <p>Here is what I plan to execute day one in office.</p>
+            
+            <div class="pillars-grid">
+                <div class="pillar-card glass">
+                    <div class="pillar-icon">
+                        <i data-lucide="pie-chart" width="24" height="24"></i>
+                    </div>
+                    <h3>Total Transparency</h3>
+                    <p>No hidden numbers or confusing ledgers. Regular updates will be shared so everyone knows how much money we have and where it's allocated.</p>
+                </div>
+                <div class="pillar-card glass">
+                    <div class="pillar-icon">
+                        <i data-lucide="trending-up" width="24" height="24"></i>
+                    </div>
+                    <h3>Smart Fundraisers</h3>
+                    <p>Hosting fundraising events that people actually want to participate in, maximizing profits without putting pressure on individual students.</p>
+                </div>
+                <div class="pillar-card glass">
+                    <div class="pillar-icon">
+                        <i data-lucide="users" width="24" height="24"></i>
+                    </div>
+                    <h3>Class Unity & Events</h3>
+                    <p>Channeling our resources directly into social gatherings, freshman gear, and spirit activities that bring the whole grade together.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. INTERACTIVE BUDGET SIMULATOR -->
+        <section id="simulator" class="simulator-section glass reveal">
+            <div class="simulator-grid">
+                <div class="simulator-content">
+                    <div class="section-title">
+                        <i data-lucide="cpu" width="14" height="14"></i> Interactive Feature
+                    </div>
+                    <h2>Class Fund Allocator</h2>
+                    <p>Test how we can split a simulated freshman budget pool. Adjust the slider to see how much goes towards social events vs. class gear!</p>
+                    
+                    <div class="slider-group">
+                        <label>
+                            <span>Social Events & Activities</span>
+                            <span id="sliderVal">60%</span>
+                        </label>
+                        <input type="range" id="budgetSlider" min="10" max="90" value="60" oninput="updateBudgetSimulation()">
+                    </div>
+                </div>
+                <div class="simulator-output">
+                    <h3>Calculated Impact</h3>
+                    <div class="output-amount" id="outputResult">3 Big Events</div>
+                    <p class="output-desc" id="outputDesc">Allocating this percentage ensures we can fund major class hangouts while maintaining a healthy emergency savings buffer.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. FAQ ACCORDION -->
+        <section id="faq" class="faq-section reveal">
+            <div class="section-title" style="justify-content: center;">
+                <i data-lucide="help-circle" width="14" height="14"></i> Common Questions
+            </div>
+            <h2>Got Questions? I've Got Answers.</h2>
+            <p>Everything you need to know about my campaign and role.</p>
+
+            <div class="faq-container">
+                <div class="faq-item glass" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>What does a 9th Grade Treasurer actually do?</span>
+                        <i data-lucide="chevron-down" class="faq-icon" width="18" height="18"></i>
+                    </div>
+                    <div class="faq-answer">
+                        The treasurer manages class funds, keeps track of spending for events, works with school administration on budget approvals, and helps plan fundraisers.
+                    </div>
+                </div>
+                <div class="faq-item glass" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>How can I give suggestions for class spending?</span>
+                        <i data-lucide="chevron-down" class="faq-icon" width="18" height="18"></i>
+                    </div>
+                    <div class="faq-answer">
+                        I'll be setting up an anonymous digital suggestion link and check-ins during homeroom so any freshman can pitch ideas directly to me.
+                    </div>
+                </div>
+                <div class="faq-item glass" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>When is the election voting date?</span>
+                        <i data-lucide="chevron-down" class="faq-icon" width="18" height="18"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Check your Conestoga student email announcements for exact voting dates and links sent out by student council advisors!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. SUPPORT TICKER -->
+        <section class="support-section reveal">
+            <div class="section-title" style="justify-content: center;">
+                <i data-lucide="heart" width="14" height="14"></i> Pioneer Community
+            </div>
+            <h2>Backed by the Class of '29</h2>
+            <p>Freshmen across Conestoga are getting behind smart financial leadership.</p>
+            
+            <div class="ticker-wrap">
+                <div class="ticker-move">
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Great choice for budget management!"</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Total transparency is what we need."</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Vote George Zhang for Treasurer!"</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Let's make freshman year epic."</div>
+                    <!-- Duplicate items for seamless continuous scrolling animation loop -->
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Great choice for budget management!"</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Total transparency is what we need."</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Vote George Zhang for Treasurer!"</div>
+                    <div class="ticker-item"><i data-lucide="check" width="14" height="14" style="color:#b38600"></i> "Let's make freshman year epic."</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. VOTE CALL TO ACTION -->
+        <section id="vote" class="vote-section reveal">
+            <div class="section-title" style="justify-content: center;">
+                <i data-lucide="award" width="14" height="14"></i> Make Your Voice Heard
+            </div>
+            <h2>Ready to Back George Zhang?</h2>
+            <p>Cast your vote for reliable, organized, and transparent leadership. Let's make this a legendary year at Conestoga High School.</p>
+            <button class="vote-btn-giant" onclick="triggerConfetti()">
+                <i data-lucide="sparkles" width="20" height="20"></i> Vote George Zhang for Treasurer
+            </button>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div>Conestoga High School • Class of 2029 Student Council Elections</div>
+            <div>Built for <strong>George Zhang</strong> Campaign • Pioneer Pride</div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts for Icons, Scroll Animations & Interactivity -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Scroll Reveal Observer Animation
+        const reveals = document.querySelectorAll('.reveal');
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        reveals.forEach(reveal => {
+            scrollObserver.observe(reveal);
+        });
+
+        // FAQ Accordion Handler
+        function toggleFaq(element) {
+            const isOpen = element.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+            if (!isOpen) {
+                element.classList.add('open');
+            }
+        }
+
+        // Budget Simulator Interactive Logic
+        function updateBudgetSimulation() {
+            const val = document.getElementById('budgetSlider').value;
+            document.getElementById('sliderVal').innerText = val + '%';
+            
+            const outputResult = document.getElementById('outputResult');
+            const outputDesc = document.getElementById('outputDesc');
+
+            if (val < 35) {
+                outputResult.innerText = "Max Savings & Safety";
+                outputDesc.innerText = "A conservative split focusing heavily on building a safety net for future years down the road.";
+            } else if (val >= 35 && val <= 70) {
+                outputResult.innerText = "3 Major Events + Fund Buffer";
+                outputDesc.innerText = "The sweet spot! Balances fun class activities while protecting money for class gear.";
+            } else {
+                outputResult.innerText = "Maximum Social Events!";
+                outputDesc.innerText = "Prioritizes immediate high-energy get-togethers and celebrations for the freshman class.";
+            }
+        }
+
+        // Confetti / Interactive Celebration Effect
+        function triggerConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#FFC700', '#FFE680', '#1f2328', '#ffffff']
+            });
+        }
+    </script>
+</body>
+</html>
